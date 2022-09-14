@@ -1,14 +1,34 @@
+const hamburger = document.getElementById('hamburger');
+const navUl = document.getElementById('nav-ul');
+
+hamburger.addEventListener('click', () => {
+    navUl.classList.toggle('show');
+});
 
 
+
+//footer
 const today = new Date()
 const thisYear= today.getFullYear()
 
 const footer = document.querySelector("footer")
 const copyright = document.createElement("p")
-copyright.innerText= `Jackie Vazquez ${thisYear}`
+copyright.innerHTML= `Jackie Vazquez ${thisYear}  
+          <span id="contact-links-section">
+              <a href="https://github.com/jvazquez2028" target="_blank"><i class="fa-brands fa-github contact-links"></i></a>
+       
+              <a href="https://www.linkedin.com/in/jaqueline-vazquez-a7b37a220/" target="_blank"><i class="fab fa-linkedin contact-links"></i></a>
+    
+              <a href="https://twitter.com/JackieV_24" target="_blank"><i class="fab fa-twitter-square contact-links"></i></a>
+      
+              <a href="mailto:jvazquez2028@gmail.com"><i class="fas fa-envelope-square contact-links"></i></a>
+              </span>
+      `
 footer.appendChild(copyright)
 
-const skills = ['HTML', 'CSS', 'Javascript']
+
+
+const skills = ['HTML', 'CSS', 'Javascript', 'Github']
 const skillsSection = document.getElementById('skills')
 const skillsList = skillsSection.querySelector('ul')
 
@@ -20,93 +40,52 @@ skills.forEach((skill) => {
 })
 
 
-/*
-document.querySelector('#submit').addEventListener('click', run)
-
-function run() {
-  const name = document.querySelector('#name').value
-  const email = document.querySelector('#email').value
-  const message = document.querySelector('#message').value
-
-  document.querySelector('#displayMessage').innerText = `
-  <span>
-  <a href="mailto:${email}">${name}</a>
-  wrote: ${message} 
-  </span>`
-
 
 //lesson 4.3
+//message form
 
-const messageForm = document.getElementsByName('leave_message')[0]
+const messageForm = document.getElementsByName('leave_message')[0];
 
-messageForm.addEventListener("submit", (e) => {
+messageForm.addEventListener("submit", messageSubmit)
     
-    e.preventDefault()
+    function messageSubmit(event) {
+      event.preventDefault()
 
-    let {name, email, message } = e.target
+    let {name, email, message } = event.target
 
-    addMessageToList({
-      name: name.value, 
-      email: email.value,
-      message: message.value
+      console.log("name", name.value)
+      console.log("email", email.value)
+      console.log("message", message.value)
+
+    
+
+let messages = document.getElementById('message-list')
+let messageSubmited = messages.querySelector('div')
+let newMessage = document.createElement('li')
+console.log(messageSubmited)
+  
+newMessage.innerHTML = `
+        <span>
+        <a href="mailto:${email.value}">${name.value}</a>
+        wrote: ${message.value} 
+        </span>`
+messageSubmited.appendChild(newMessage)
+
+const removeButton= document.createElement("erase")
+  removeButton.innerText="Remove"
+      removeButton.type="button"
+      newMessage.appendChild(removeButton)
+      
+removeButton.addEventListener('click', function (e) {
+  const entry = e.target.parentNode;
+  entry.remove()
 })
     
-   messageForm.reset()
-})
+}
 
-*/
 
 /*
-    const messageList = document.getElementById("message-list")
-
-    let addMessageToList = ({ name, email, message }) => {
-       const newMessage = document.createElement("li") 
-
-
-       const id= addMessageToList()
-       messageIds[id] = newMessage
-
-
-
-
-       newMessage.innerHTML = `
-        <span>
-        <a href="mailto:${email}">${name}</a>
-        wrote: ${message} 
-        <button onclick="removeButton(${id})" type="button" id="removeButton"> Remove </button>
-        </span>
-        `
-        const removeButton= document.getElementById("removeButton")
-
-        messageList.appendChild(newMessage)
-        document.getElementById("messages-section").classList.remove("hideSection")
-    }
-   // Add an event listener to the removeButton element that handles the "click" event
-   // Inside the callback function, find the button's parent element using DOM Traversal (hint: parentNode property) and store it in a variable named entry
-  //  Remove the entry element from the DOM (hint: remove method)
-  //   Append the removeButton to the newMessage element
-  //  hint: appendChild method
-  //   Append the newMessage to the messageList element
-
-
-  
- 
-
-    
-
-    
-
-
-   // const hamburger = document.getElementsById('hamburger')
-    const navUL = document.getElementsByClassName('nav-ul')
-
-    hamburger.addEventListener('click', () => {
-        navUL.classList.toggle('show');
-    })
-    
-
-
-    // lesson 6-1
+lesson 6-1
 
     let githubRequest = new XMLHttpRequest()
 
@@ -132,14 +111,14 @@ messageForm.addEventListener("submit", (e) => {
   
 
   //lesson 6-2
-
+//fetch
   fetch("https://api.github.com/users/jvazquez2028/repos")
   .then((response) => response.json())
   .then((repositories) => {
     let projectsList = document.getElementById("projects") 
     repositories.forEach(function(repo) {
       let project = document.createElement("li")
-      project.innerHTML = `<a href=${repo.html_url}>${repo.name}</a>`
+      project.innerHTML = `<a href=${repo.html_url} target=”_blank”>${repo.name}</a>`
       projectsList.appendChild(project)
     })
   })
